@@ -122,7 +122,7 @@ public class MainActivitySync extends Activity{
                 // Hide ProgressBar
                 prgDialog.hide();
                 // Update SQLite DB with response sent by getusers.php
-                updateSQLite(headers);
+                updateSQLite(response);
                 Toast.makeText(getApplicationContext(), "Lista Negra Actualizada", Toast.LENGTH_LONG).show();
 
             }
