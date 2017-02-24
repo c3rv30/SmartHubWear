@@ -124,7 +124,7 @@ public class MainActivitySync extends Activity{
                 // Hide ProgressBar
                 prgDialog.hide();
                 // Update SQLite DB with response sent by getusers.php
-                //updateSQLite(response);
+                //updateSQLite(bytes);
                 Toast.makeText(getApplicationContext(), "Lista Negra Actualizada", Toast.LENGTH_LONG).show();
 
             }
@@ -171,7 +171,7 @@ public class MainActivitySync extends Activity{
         });
     }
 
-    public void updateSQLite(String response){
+    public void updateSQLite(String[] response){
         ArrayList<HashMap<String, String>> usersynclist;
         usersynclist = new ArrayList<HashMap<String, String>>();
         // Create GSON object
