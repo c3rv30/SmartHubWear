@@ -26,8 +26,9 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:25.2.0'
     testCompile 'junit:junit:4.12'
-    compile files('libs/android-async-http-1.4.9.jar')
-    compile files('libs/gson-2.8.0-sources.jar')
-    compile files('libs/gson-2.8.0-javadoc.jar')
+    compile files('libs/android-async-http-1.4.4.jar')
+    compile files('libs/gson-2.2.4-sources.jar')
+    compile files('libs/gson-2.2.4-javadoc.jar')
+    compile files('libs/gson-2.2.4.jar')
     compile 'cz.msebera.android:httpclient:4.3.6'
 }
