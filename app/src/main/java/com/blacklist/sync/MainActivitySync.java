@@ -120,58 +120,33 @@ public class MainActivitySync extends Activity{
         client.post("http://idcontrol.cc/sqlitemysqlsync/getusers.php", params, new AsyncHttpResponseHandler() {
 
             @Override
-            public void onSuccess(int i, cz.msebera.android.httpclient.Header[] headers, byte[] bytes) {
+            public void onSuccess(String response) {
                 // Hide ProgressBar
                 prgDialog.hide();
                 // Update SQLite DB with response sent by getusers.php
-                //updateSQLite(bytes);
+                updateSQLite(response);
                 Toast.makeText(getApplicationContext(), "Lista Negra Actualizada", Toast.LENGTH_LONG).show();
-
             }
 
+            // When error occured
             @Override
-            public void onFailure(int i, cz.msebera.android.httpclient.Header[] headers, byte[] bytes, Throwable throwable) {
+            public void onFailure(int statusCode, Throwable error, String content) {
                 // TODO Auto-generated method stub
                 // Hide ProgressBar
                 prgDialog.hide();
-                if (i == 404) {
+                if (statusCode == 404) {
                     Toast.makeText(getApplicationContext(), "Requested resource not found", Toast.LENGTH_LONG).show();
-                } else if (i == 500) {
+                } else if (statusCode == 500) {
                     Toast.makeText(getApplicationContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(getApplicationContext(), "Unexpected Error occcured! [Most common Error: Device might not be connected to Internet]",
                             Toast.LENGTH_LONG).show();
                 }
-
             }
-
-//            @Override
-//            public void onSuccess(String response) {
-//                // Hide ProgressBar
-//                prgDialog.hide();
-//                // Update SQLite DB with response sent by getusers.php
-//                updateSQLite(response);
-//                Toast.makeText(getApplicationContext(), "Lista Negra Actualizada", Toast.LENGTH_LONG).show();
-//            }
-//            // When error occured
-//            @Override
-//            public void onFailure(int statusCode, Throwable error, String content) {
-//                // TODO Auto-generated method stub
-//                // Hide ProgressBar
-//                prgDialog.hide();
-//                if (statusCode == 404) {
-//                    Toast.makeText(getApplicationContext(), "Requested resource not found", Toast.LENGTH_LONG).show();
-//                } else if (statusCode == 500) {
-//                    Toast.makeText(getApplicationContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
-//                } else {
-//                    Toast.makeText(getApplicationContext(), "Unexpected Error occcured! [Most common Error: Device might not be connected to Internet]",
-//                            Toast.LENGTH_LONG).show();
-//                }
-//            }
         });
     }
 
-    public void updateSQLite(String[] response){
+    public void updateSQLite(String response){
         ArrayList<HashMap<String, String>> usersynclist;
         usersynclist = new ArrayList<HashMap<String, String>>();
         // Create GSON object
@@ -222,29 +197,18 @@ public class MainActivitySync extends Activity{
         params.put("syncsts", json);
         // Make Http call to updatesyncsts.php with JSON parameter which has Sync statuses of Users
         client.post("http://idcontrol.cc/sqlitemysqlsync/updatesyncsts.php", params, new AsyncHttpResponseHandler() {
+
             @Override
-            public void onSuccess(int i, Header[] headers, byte[] bytes) {
+            public void onSuccess(String response) {
                 //Toast.makeText(getApplicationContext(), "MySQL DB has been informed about Sync activity", Toast.LENGTH_LONG).show();
                 Toast.makeText(getApplicationContext(), "El Servidor a sido informado de la sincronizacion", Toast.LENGTH_LONG).show();
             }
 
             @Override
-            public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
+            public void onFailure(int statusCode, Throwable error, String content) {
                 //Toast.makeText(getApplicationContext(), "Error Occured", Toast.LENGTH_LONG).show();
                 Toast.makeText(getApplicationContext(), "Ocurrio un Error", Toast.LENGTH_LONG).show();
             }
-
-//            @Override
-//            public void onSuccess(String response) {
-//                //Toast.makeText(getApplicationContext(), "MySQL DB has been informed about Sync activity", Toast.LENGTH_LONG).show();
-//                Toast.makeText(getApplicationContext(), "El Servidor a sido informado de la sincronizacion", Toast.LENGTH_LONG).show();
-//            }
-//
-//            @Override
-//            public void onFailure(int statusCode, Throwable error, String content) {
-//                //Toast.makeText(getApplicationContext(), "Error Occured", Toast.LENGTH_LONG).show();
-//                Toast.makeText(getApplicationContext(), "Ocurrio un Error", Toast.LENGTH_LONG).show();
-//            }
         });
     }
 
@@ -253,6 +217,4 @@ public class MainActivitySync extends Activity{
         Intent objIntent = new Intent(getApplicationContext(), MainActivitySync.class);
         startActivity(objIntent);
     }
-
-
 }
