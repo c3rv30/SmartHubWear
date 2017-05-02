@@ -1,4 +1,4 @@
-package com.blacklist.sync;
+package com;
 
 import android.app.Activity;
 import android.app.AlarmManager;
@@ -7,11 +7,15 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.widget.Button;
 import android.widget.Toast;
 
+import com.blacklist.sync.DBController;
+import com.blacklist.sync.MainActivitySync;
+import com.blacklist.sync.SampleBC;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.R;
@@ -26,35 +30,25 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import cz.msebera.android.httpclient.Header;
 
-/**
- * Created by SmartHub on 24-02-17.
- */
+public class MainActivity extends Activity {
 
-public class MainActivitySync extends Activity{
-
-    // DB Class to perform DB related operations
+    //DB Class to perform DB related operations
     DBController controller = new DBController(this);
     // Progress Dialog Object
     ProgressDialog prgDialog;
     HashMap<String, String> queryValues;
+    Button button_manual;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_sync);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        setContentView(R.layout.activity_main);
+        //button_manual = (Button)findViewById(R.id.manual);
 
-
-       /*// Get User records from SQLite DB
-        ArrayList<HashMap<String, String>> userList = controller.getAllUsers();
-        // If users exists in SQLite DB
-        if (userList.size() != 0) {
-            // Set the User Array list in ListView
-            ListAdapter adapter = new SimpleAdapter(MainActivitySync.this, userList, R.layout.view_user_entry, new String[] {"userId", "userName" }, new int[] { R.id.userId, R.id.userName });
-            ListView myList = (ListView) findViewById(android.R.id.list);
-            myList.setAdapter(adapter);
-        }*/
 
         // Initialize Progress Dialog properties
         prgDialog = new ProgressDialog(this);
@@ -70,42 +64,31 @@ public class MainActivitySync extends Activity{
         // Alarm Manager calls BroadCast for every Ten seconds (10 * 1000), BroadCase further calls service to check if new records are inserted in
         // Remote MySQL DB
         //alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis() + 5000, 60 * 1000, pendingIntent);
-
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        //getActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+    /*
+    *
+    *
+    * WEAS
+    *
+    *
+    *
+    */
+    public void ingreso_manual(View view) {
+        Intent intent = new Intent(this, IngresoManual.class);
+        startActivity(intent);
     }
 
+
+    // SINCRONIZACION
     //Button Sync. BlackList
     public void syncDB(View v){
+        //controller.updateSyncStatusToNo();
         controller.deleteFromTable();
         syncSQLiteMySQLDB();
+        syncSQLiteToMySQLDB();
+        //syncSQLiteToMySQLDBEquipo();
     }
-
-
-    // Options Menu (ActionBar Menu)
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        //getMenuInflater().inflate(R.menu.main, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    // When Options Menu is selected
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here.
-
-        // When Sync action button is clicked
-        /*if (id == R.id.refresh) {
-            // Transfer data from remote MySQL DB to SQLite on Android and perform Sync
-            controller.deleteFromTable();
-            syncSQLiteMySQLDB();
-            return true;
-        }*/
-        //return super.onOptionsItemSelected(item);
-        finish();
-        return true;
-    }
-
 
     // Method to Sync MySQL to SQLite DB
     public void syncSQLiteMySQLDB() {
@@ -118,7 +101,6 @@ public class MainActivitySync extends Activity{
         // Make Http call to getusers.php
         //client.post("http://192.168.1.139:8888/getusers.php", params, new AsyncHttpResponseHandler() {
         client.post("http://idcontrol.cc/sqlitemysqlsync/getusers.php", params, new AsyncHttpResponseHandler() {
-
             @Override
             public void onSuccess(String response) {
                 // Hide ProgressBar
@@ -127,7 +109,6 @@ public class MainActivitySync extends Activity{
                 updateSQLite(response);
                 Toast.makeText(getApplicationContext(), "Lista Negra Actualizada", Toast.LENGTH_LONG).show();
             }
-
             // When error occured
             @Override
             public void onFailure(int statusCode, Throwable error, String content) {
@@ -163,12 +144,15 @@ public class MainActivitySync extends Activity{
                     JSONObject obj = (JSONObject) arr.get(i);
                     System.out.println(obj.get("userId"));
                     System.out.println(obj.get("userRut"));
+                    System.out.println(obj.get("numList"));
                     // DB QueryValues Object to insert into SQLite
                     queryValues = new HashMap<String, String>();
                     // Add userID extracted from Object
                     queryValues.put("userId", obj.get("userId").toString());
                     // Add userName extracted from Object
                     queryValues.put("userRut", obj.get("userRut").toString());
+                    // Add userName extracted from Object
+                    queryValues.put("numList", obj.get("numList").toString());
                     // Insert User into SQLite DB
                     controller.insertUser(queryValues);
                     HashMap<String, String> map = new HashMap<String, String>();
@@ -178,7 +162,7 @@ public class MainActivitySync extends Activity{
                     usersynclist.add(map);
                 }
                 // Inform Remote MySQL DB about the completion of Sync activity by passing Sync status of Users
-                // Permite cambiar estad de sincronizacion de datos en servidor
+                // Permite cambiar estado de sincronizacion de datos en servidor
                 //updateMySQLSyncSts(gson.toJson(usersynclist));
                 // Reload the Main Activity
                 //reloadActivity();
@@ -197,7 +181,6 @@ public class MainActivitySync extends Activity{
         params.put("syncsts", json);
         // Make Http call to updatesyncsts.php with JSON parameter which has Sync statuses of Users
         client.post("http://idcontrol.cc/sqlitemysqlsync/updatesyncsts.php", params, new AsyncHttpResponseHandler() {
-
             @Override
             public void onSuccess(String response) {
                 //Toast.makeText(getApplicationContext(), "MySQL DB has been informed about Sync activity", Toast.LENGTH_LONG).show();
@@ -217,4 +200,59 @@ public class MainActivitySync extends Activity{
         Intent objIntent = new Intent(getApplicationContext(), MainActivitySync.class);
         startActivity(objIntent);
     }
+
+    public void syncSQLiteToMySQLDB(){
+        //Create AsycHttpClient object
+        AsyncHttpClient client = new AsyncHttpClient();
+        RequestParams params = new RequestParams();
+        ArrayList<HashMap<String, String>> userList =  controller.getAllAsis();
+        if(userList.size()!=0){
+            if(controller.dbSyncCount() != 0){
+                prgDialog.show();
+                params.put("usersJSON", controller.composeJSONfromSQLite());
+                client.post("http://idcontrol.cc/sqlitemysqlsync/insertasistentes.php",params ,new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(String response) {
+                        System.out.println(response);
+                        prgDialog.hide();
+                        try {
+                            JSONArray arr = new JSONArray(response);
+                            System.out.println(arr.length());
+                            for(int i=0; i<arr.length();i++){
+                                JSONObject obj = (JSONObject)arr.get(i);
+                                System.out.println(obj.get("id"));
+                                System.out.println(obj.get("status"));
+                                controller.updateSyncStatus(obj.get("id").toString(),obj.get("status").toString());
+                            }
+                            Toast.makeText(getApplicationContext(), "Sincronizacion completa!", Toast.LENGTH_LONG).show();
+                        } catch (JSONException e) {
+                            // TODO Auto-generated catch block
+                            Toast.makeText(getApplicationContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
+                            e.printStackTrace();
+                            Log.e("Error", "Response");
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Throwable error,
+                                          String content) {
+                        // TODO Auto-generated method stub
+                        prgDialog.hide();
+                        if(statusCode == 404){
+                            Toast.makeText(getApplicationContext(), "Requested resource not found", Toast.LENGTH_LONG).show();
+                        }else if(statusCode == 500){
+                            Toast.makeText(getApplicationContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
+                        }else{
+                            Toast.makeText(getApplicationContext(), "Error inesperado! [Error mas comun: Dispositivo sin conexion a internet ]", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+            }else{
+                Toast.makeText(getApplicationContext(), "SQLite and Remote MySQL DBs are in Sync!", Toast.LENGTH_LONG).show();
+            }
+        }else{
+            Toast.makeText(getApplicationContext(), "No hay Datos para Subir", Toast.LENGTH_LONG).show();
+        }
+    }
+
 }

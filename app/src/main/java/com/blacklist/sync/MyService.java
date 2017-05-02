@@ -10,7 +10,7 @@ import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.widget.Toast;
 
-import com.idcontrolwear.smarthub.idcontrolwear.R;
+import com.R;
 
 /**
  * Created by c3rv30 on 3/20/17.

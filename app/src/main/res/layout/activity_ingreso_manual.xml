@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000">
+
+    <!-- Back Button-->
+    <com.andexert.library.RippleView
+        android:id="@+id/back_manual"
+        rv_centered="true"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:animateLayoutChanges="true"
+        android:background="@drawable/circle_without_border"
+        android:onClick="back_button"
+        app:rv_centered="true">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/back_button" />
+    </com.andexert.library.RippleView>
+
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/back_manual"
+        android:layout_marginStart="18dp"
+        android:layout_toEndOf="@+id/back_manual"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Ingrese Rut"
+        android:textAlignment="center"
+        android:textColor="@android:color/background_light" />
+<!--
+    &lt;!&ndash; C.I &ndash;&gt;
+    <com.andexert.library.RippleView
+        android:id="@+id/C.I"
+        android:layout_width="40dp"
+        android:layout_height="30dp"
+        android:layout_alignParentEnd="true"
+        android:background="@drawable/circle_without_border"
+        rv_centered="true"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="20dp">
+
+        <TextView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/back_button"
+            android:text="C.I"
+            android:textAlignment="center"
+            android:textColor="#fff"
+            android:textSize="20sp" />
+    </com.andexert.library.RippleView>
+
+    &lt;!&ndash; OTROS &ndash;&gt;
+    <com.andexert.library.RippleView
+        android:id="@+id/otros"
+        android:layout_width="85dp"
+        android:layout_height="30dp"
+        android:layout_alignParentEnd="true"
+        android:background="@drawable/circle_without_border"
+        rv_centered="true"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="40dp">
+
+        <TextView
+            android:layout_width="80dp"
+            android:layout_height="30dp"
+            android:src="@drawable/back_button"
+            android:text="OTROS"
+            android:textAlignment="center"
+            android:textColor="#fff"
+            android:textSize="20sp" />
+    </com.andexert.library.RippleView>-->
+</RelativeLayout>

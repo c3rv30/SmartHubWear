@@ -4,8 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import com.idcontrolwear.smarthub.idcontrolwear.MainActivity;
-import com.idcontrolwear.smarthub.idcontrolwear.R;
+import com.R;
 
 /**
  * Created by c3rv30 on 3/10/17.
