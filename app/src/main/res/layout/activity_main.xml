@@ -35,7 +35,7 @@
         <ImageView
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:src="@drawable/admin"/>
+            android:src="@drawable/key_white"/>
     </com.andexert.library.RippleView>
 
     <!-- Sync Button -->
@@ -63,11 +63,12 @@
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true">
+        android:layout_alignParentEnd="true"
+        android:onClick="estadisticas">
         <ImageView
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:src="@drawable/sta"/>
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:src="@drawable/sta_2"/>
     </com.andexert.library.RippleView>
 
     <!-- Scan Button -->
@@ -86,7 +87,7 @@
             android:src="@drawable/scan"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
-            android:id="@+id/imageView" />
+            android:id="@+id/imgCenter" />
         <!--
         <pl.droidsonroids.gif.GifImageView
             android:layout_width="210dp"
@@ -96,4 +97,15 @@
             />
          -->
     </com.andexert.library.RippleView>
+
+    <EditText
+        android:id="@+id/editTextRut"
+        android:layout_width="160dp"
+        android:layout_height="50dp"
+        android:layout_alignTop="@+id/lkjhgfd"
+        android:layout_centerHorizontal="true"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Name"
+        android:textColor="@android:color/white" />
 </RelativeLayout>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000"
+    android:padding="20dp"
+    android:paddingBottom="20dp"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:paddingTop="20dp">
+
+    <!-- Back Button-->
+    <com.andexert.library.RippleView
+        android:id="@+id/back_manual"
+        rv_centered="true"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="0dp"
+        android:animateLayoutChanges="true"
+        android:background="@drawable/circle_without_border"
+        android:onClick="back_button"
+        app:rv_centered="true">
+
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/back_button" />
+    </com.andexert.library.RippleView>
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewAsis"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginTop="111dp"
+        android:text="date_selected"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@android:color/white"
+        android:textSize="23sp" />
+
+    <Button
+        android:id="@+id/buttonSetCounts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textSize="23sp"
+        android:text="Buscar Asistentes"
+        android:onClick="resEstadisticas"
+        android:layout_below="@+id/textViewAsis"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="36dp" />
+
+    <TextView
+        android:id="@+id/textViewAsis"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/textView3"
+        android:layout_below="@+id/buttonSetDate"
+        android:layout_gravity="center"
+        android:layout_marginTop="26dp"
+        android:text="date_selected"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@android:color/white"
+        android:textSize="23sp" />
+
+    <Button
+        android:id="@+id/buttonSetDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:onClick="setDate"
+        android:text="Seleccione Fecha"
+        android:textSize="23sp"
+        android:layout_marginTop="22dp"
+        android:layout_below="@+id/back_manual"
+        android:layout_centerHorizontal="true" />
+
+</RelativeLayout>
