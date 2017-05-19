@@ -10,7 +10,9 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -75,6 +77,7 @@ public class IngresoManual extends AppCompatActivity {
         switchOtro = (Switch) findViewById(R.id.switch_otro);
 
 
+
         // Initialize Progress Dialog properties
         prgDialog = new ProgressDialog(this);
         //prgDialog.setMessage("Transferring Data from Remote MySQL DB and Syncing SQLite. Please wait...");
@@ -97,6 +100,18 @@ public class IngresoManual extends AppCompatActivity {
         year = calendar.get(Calendar.YEAR);
         month = calendar.get(Calendar.MONTH);
         day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        editRut.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                Log.i("click", "onMTouch");
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
+                return false;
+
+            }
+        });
 
         switchChile.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -148,6 +163,8 @@ public class IngresoManual extends AppCompatActivity {
             }
         }
     }
+
+
 
     public static boolean validarRut(String rut) {
         boolean validacion = false;

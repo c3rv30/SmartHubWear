@@ -30,7 +30,7 @@
         android:background="@drawable/circle_without_border"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-        android:layout_alignStart="@+id/estadisticas"
+        android:layout_alignStart="@+id/statistics"
         android:onClick="ingreso_manual">
         <ImageView
             android:layout_width="80dp"
@@ -56,7 +56,7 @@
 
     <!-- Stadistic Button -->
     <com.andexert.library.RippleView
-        android:id="@+id/estadisticas"
+        android:id="@+id/statistics"
         android:layout_width="90dp"
         android:layout_height="90dp"
         android:background="@drawable/circle_without_border"
@@ -64,7 +64,7 @@
         android:layout_marginRight="5dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:onClick="estadisticas">
+        android:onClick="statistics">
         <ImageView
             android:layout_width="75dp"
             android:layout_height="75dp"
@@ -88,19 +88,12 @@
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
             android:id="@+id/imgCenter" />
-        <!--
-        <pl.droidsonroids.gif.GifImageView
-            android:layout_width="210dp"
-            android:layout_height="210dp"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"
-            />
-         -->
     </com.andexert.library.RippleView>
+
 
     <EditText
         android:id="@+id/editTextRut"
-        android:layout_width="160dp"
+        android:layout_width="180dp"
         android:layout_height="50dp"
         android:layout_alignTop="@+id/lkjhgfd"
         android:layout_centerHorizontal="true"

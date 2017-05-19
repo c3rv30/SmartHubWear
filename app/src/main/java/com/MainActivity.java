@@ -4,15 +4,13 @@ import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
-import android.content.BroadcastReceiver;
+
 import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
-import android.nfc.Tag;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -20,21 +18,17 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.blacklist.sync.ActividadEstadisticas;
+import com.blacklist.sync.ActivityStatistics;
 import com.blacklist.sync.DBController;
-import com.blacklist.sync.MainActivitySync;
 import com.blacklist.sync.SampleBC;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.R;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -43,7 +37,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static android.content.ContentValues.TAG;
 import static java.lang.System.out;
 
 
@@ -66,6 +59,9 @@ public class MainActivity extends Activity {
     List<Map<String, String>> listData = new ArrayList<Map<String, String>>();
 
 
+    private GifImageView gifImageView;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,7 +72,7 @@ public class MainActivity extends Activity {
         txtRut.setText("");
         //txtRut.setVisibility(View.INVISIBLE);
 
-        checkCenter = (ImageView) findViewById(R.id.imgCenter);
+        //checkCenter = (ImageView) findViewById(R.id.imgCenter);
 
        // Initialize Progress Dialog properties
         prgDialog = new ProgressDialog(this);
@@ -95,43 +91,41 @@ public class MainActivity extends Activity {
         //getActionBar().setDisplayHomeAsUpEnabled(true);
 
         // Set Date
-        //fecha = (TextView)findViewById(R.id.textView4);
         calendar = Calendar.getInstance();
         year = calendar.get(Calendar.YEAR);
         month = calendar.get(Calendar.MONTH);
         day = calendar.get(Calendar.DAY_OF_MONTH);
 
 
-        txtRut.addTextChangedListener(new TextWatcher() {
+        txtRut.setOnKeyListener(new View.OnKeyListener()
+        {
+            public boolean onKey(View v, int keyCode, KeyEvent event)
+            {
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (event.getAction() == KeyEvent.ACTION_DOWN)
+                {
+                    switch (keyCode)
+                    {
+                        case KeyEvent.KEYCODE_DPAD_CENTER:
+                        case KeyEvent.KEYCODE_ENTER:
+                            String rut;
+                            rut = txtRut.getText().toString();
+                            boolean t = validarRut(rut);
+                            if (t) {
 
-            }
+                                validarAsis(rut);
 
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (s.length() >= 10) {
-                    String rut = txtRut.getText().toString();
-                    Log.i(TAG, "Rut: " + rut);
-                    if (rut.length() >= 8) {
-                        boolean t = validarRut(rut);
-                        if (t) {
-
-                            validarAsis(rut);
-
-                            txtRut.setText("");
-                        } else {
-                            Toast.makeText(getApplicationContext(), "RUT NO VALIDO", Toast.LENGTH_LONG).show();
-                            txtRut.setText("");
-                        }
+                                txtRut.setText("");
+                            } else {
+                                Toast.makeText(getApplicationContext(), "RUT NO VALIDO", Toast.LENGTH_LONG).show();
+                                txtRut.setText("");
+                            }
+                            return true;
+                        default:
+                            break;
                     }
                 }
+                return false;
             }
         });
     }
@@ -141,10 +135,11 @@ public class MainActivity extends Activity {
         startActivity(intent);
     }
 
-    public void estadisticas(View view) {
-        Intent intent = new Intent(this, ActividadEstadisticas.class);
+    public void statistics(View view){
+        Intent intent = new Intent(this, ActivityStatistics.class);
         startActivity(intent);
     }
+
 
     //Button Sync. BlackList
     public void syncDB(View v){
@@ -174,6 +169,7 @@ public class MainActivity extends Activity {
         } catch (Exception e) {
             System.out.println(e);
         }
+
         return validacion;
     }
 
